@@ -1,7 +1,7 @@
 #include "Piece.h"
 
 bool Piece::movePawn(Square* thisPawn, Square* thatSpace) {
-	
+
 	using namespace std;
 	int pawnX = thisPawn->getX();
 	int pawnY = thisPawn->getY();
@@ -54,7 +54,7 @@ bool Piece::movePawn(Square* thisPawn, Square* thatSpace) {
 
 bool Piece::moveKnight(Square* thisKnight, Square* thatSpace)
 {
-	
+
 	int knightX = thisKnight->getX();
 	int knightY = thisKnight->getY();
 	int thatX = thatSpace->getX();
@@ -71,6 +71,56 @@ bool Piece::moveKnight(Square* thisKnight, Square* thatSpace)
 		return false;
 	}
 }
+bool Piece::moveRook(Square* thisRook, Square* thatSpace)
+{
+    int RookX = thisRook->getX();
+	int rookY = thisRook->getY();
+	int thatX = thatSpace->getX();
+	int thatY = thatSpace->getY();
+	if (RookX==thatX || rookY==thatY)
+    {
+       thatSpace->setSpace(thisRook);
+		thisRook->setEmpty();
+		return true;
+    }
+	else
+	{
+		return false;
+	}
+}
+ bool Piece::moveKing(Square* thisKing, Square* thatSpace)
+{
+    int kingX = thisKing->getX();
+	int KingY = thisKing->getY();
+	int thatX = thatSpace->getX();
+	int thatY = thatSpace->getY();
+	thatSpace->setSpace(thisKing);
+		thisKing->setEmpty();
+		return true;
+
+  }
+     bool Piece::moveQueen(Square* thisQueen, Square* thatSpace)
+     {
+    int QueenX = thisQueen->getX();
+	int QueenY = thisQueen->getY();
+	int thatX = thatSpace->getX();
+	int thatY = thatSpace->getY();
+	thatSpace->setSpace(thisQueen);
+		thisQueen->setEmpty();
+		return true;
+
+     }
+     bool Piece::moveBishop(Square* thisBishop, Square* thatSpace)
+     {
+    int BishopX = thisBishop->getX();
+	int BishopXY = thisBishop->getY();
+	int thatX = thatSpace->getX();
+	int thatY = thatSpace->getY();
+	thatSpace->setSpace(thisBishop);
+		thisBishop->setEmpty();
+		return true;
+
+     }
 
 bool  Piece::makeMove(int x1, int y1, int x2, int y2) {
 	using namespace std;
@@ -84,7 +134,7 @@ bool  Piece::makeMove(int x1, int y1, int x2, int y2) {
 
 	}
 
-	
+
 
 	switch (from->getPiece())
 	{
@@ -93,6 +143,15 @@ bool  Piece::makeMove(int x1, int y1, int x2, int y2) {
 		break;
 	case KNIGHT: return moveKnight(from, to);
 		break;
+		case ROOK: return moveRook(from,to);
+		break;
+	case KING: return moveKing(from,  to);
+		break;
+		case BISHOP : return moveBishop(from,to);
+		break;
+		case QUEEN : return moveQueen(from,to);
+		break;
+
 	case EMPTY: cout << "You do not have a piece there" << endl;  return false;
 		break;
 	default: cout << "Something went wrong in the switch statement in makeMove()" << endl;
@@ -105,7 +164,7 @@ bool Piece::isMoved() {
 	string move;
 	int x1, x2, y1, y2;
 	bool stop = false;
-	
+
 
 	while (!stop)
 	{
@@ -116,12 +175,12 @@ bool Piece::isMoved() {
 		y1 = move[1] - 48;
 		x2 = move[2] - 48;
 		y2 = move[3] - 48;
-		
+
 
 		if (x1 < 0 || x1>7 || y1 < 0 || y1>7 || x2 < 0 || x2>7 || y2 < 0 || y2>8)
 		{
 			cout << "One of your numbers is not acceptable" << endl;
-			
+
 		}
 
 		else if (getSquare(x1, y1)->getColor() == turn)
@@ -138,17 +197,17 @@ bool Piece::isMoved() {
 		{
 			cout << "You do not have a piece there" << endl;
 		}
-		
+
 		else
 				cout << "That's not your piece. Try again." << endl;
-		
-		
-			
-		
-		
-		
+
+
+
+
+
+
 	}
-	
+
 
 
 	if (turn == BLACK)

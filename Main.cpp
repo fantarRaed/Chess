@@ -7,18 +7,18 @@ using namespace std;
 
 
 int main()
-{   
+{
 	Piece p;
 	string s;
 	bool newgame = true;
-	cout << "A chessGame by Fantar Raed  " << endl;
+	cout << "A chessGame " << endl;
 	cout << "Enter any key to continue" << endl;
 	cin >> s;
 
 	while (newgame) {
 		p.setBoard();
 		while (p.playGame());
-		
+
 	}
 
 
