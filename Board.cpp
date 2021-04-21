@@ -5,12 +5,11 @@ void Board::setBoard()
 	square[7][7].setPieceAndColor(ROOK, WHITE);
 	square[7][6].setPieceAndColor(KNIGHT, WHITE);
 	square[7][5].setPieceAndColor(BISHOP, WHITE);
-	square[7][4].setPieceAndColor(QUEEN, WHITE);
-	square[7][3].setPieceAndColor(KING, WHITE);
+	square[7][4].setPieceAndColor(KING, WHITE);
+	square[7][3].setPieceAndColor(QUEEN, WHITE);
 	square[7][2].setPieceAndColor(BISHOP, WHITE);
 	square[7][1].setPieceAndColor(KNIGHT, WHITE);
 	square[7][0].setPieceAndColor(ROOK, WHITE);
-
 	square[0][0].setPieceAndColor(ROOK, BLACK);
 	square[0][1].setPieceAndColor(KNIGHT, BLACK);
 	square[0][2].setPieceAndColor(BISHOP, BLACK);
@@ -42,7 +41,7 @@ void Board::setBoard()
 }
 void Board::printBoard() {
 	using namespace std;
-	cout << "   C: 0  1  2  3  4  5  6  7 " << endl << "L:" << endl;
+	cout << "   C: 0  1  2  3  4  5  6  7 " << endl << "R:" << endl;
 	for (int i = 0; i < 8 ; i++)
 	{
 		cout << " " << i << "   ";
