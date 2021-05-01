@@ -7,6 +7,7 @@ bool Piece::movePawn(Square* thisPawn, Square* thatSpace) {
 	int pawnY = thisPawn->getY();
 	int thatX = thatSpace->getX();
 	int thatY = thatSpace->getY();
+	char a; 
 	
 
 
@@ -29,6 +30,7 @@ bool Piece::movePawn(Square* thisPawn, Square* thatSpace) {
 			}
 		else
 				return false;
+		
 
 	}
 	else
@@ -195,8 +197,6 @@ bool Piece::moveBishop(Square* thisBishop, Square* thatSpace) {
 				}
 
 		}
-		//if (thatSpace->getPiece() == KING)
-			//return true;
 
 
 		thatSpace->setSpace(thisBishop);
@@ -245,10 +245,140 @@ bool Piece::softMoveBishop(Square thisBishop, Square thatSpace)
 		return false;
 	}
 }
+bool Piece::moveQueen(Square* thisQueen, Square* thatSpace) { 
+
+	int queenX = thisQueen->getX();
+	int queenY = thisQueen->getY();
+	int thatX = thatSpace->getX();
+	int thatY = thatSpace->getY();
+	int yy;
+	int xx;
+	bool invalid = false;
+
+	
+	if (queenX != thatX || queenY != thatY)
+	{
+
+		if (queenX == thatX)
+		{
+			yy = (thatY - queenY) / (abs(thatY - queenY));
+			for (int i = queenY + yy; i != thatY; i += yy)
+			{
+
+				if (square[thatX][i].getColor() != NONE)
+					return false;
+
+			}
+		}
+		else if (queenY == thatY)	
+			{
+
+				xx = (thatX - queenX) / (abs(thatX - queenX));
+				for (int i = queenX + xx; i != thatX; i += xx)
+				{
+					if (square[i][thatY].getColor() != NONE)
+						return false;
+				}
+			}
+		else if (abs(queenX - thatX) == abs(queenY - thatY))
+			
+				{
+					xx = (thatX - queenX) / (abs(thatX - queenX));
+					yy = (thatY - queenY) / (abs(thatY - queenY));
+
+					for (int i = 1; i < abs(queenX - thatX); i++)
+					{
+						std::cout << "It got here somehow";
+						if (square[queenX + xx * i][queenY + yy * i].getColor() != NONE)
+							return false;
+
+					}
+				}
+		else
+			 return false;
+		
+	}
+
+
+
+	if (invalid == false)
+	{
+		thatSpace->setSpace(thisQueen);
+		thisQueen->setEmpty();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+bool Piece::softMoveQueen(Square thisQueen, Square thatSpace)
+{
+	int queenX = thisQueen.getX();
+	int queenY = thisQueen.getY();
+	int thatX = thatSpace.getX();
+	int thatY = thatSpace.getY();
+	int yy;
+	int xx;
+	bool invalid = false;
+	if (queenX != thatX || queenY != thatY)
+	{
+
+		if (queenX == thatX)
+		{
+			yy = (thatY - queenY) / (abs(thatY - queenY));
+			for (int i = queenY + yy; i != thatY; i += yy)
+			{
+
+				if (square[thatX][i].getColor() != NONE)
+					return false;
+
+			}
+		}
+		else if (queenY == thatY)
+		{
+
+			xx = (thatX - queenX) / (abs(thatX - queenX));
+			for (int i = queenX + xx; i != thatX; i += xx)
+			{
+				if (square[i][thatY].getColor() != NONE)
+					return false;
+			}
+		}
+		else if (abs(queenX - thatX) == abs(queenY - thatY))
+
+		{
+			xx = (thatX - queenX) / (abs(thatX - queenX));
+			yy = (thatY - queenY) / (abs(thatY - queenY));
+
+			for (int i = 1; i < abs(queenX - thatX); i++)
+			{
+				std::cout << "It got here somehow";
+				if (square[queenX + xx * i][queenY + yy * i].getColor() != NONE)
+					return false;
+
+			}
+		}
+		else
+			return false;
+
+	}
+
+
+
+	if (invalid == false)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 bool Piece::moveKing(Square* thisKing, Square* thatSpace)
 {
-	if (abs(thatSpace->getX() - thisKing->getX()) == 1)
-		if (abs(thatSpace->getY() - thisKing->getY()) == 1)
+	if (abs(thatSpace->getX() - thisKing->getX()) == 1 || abs(thatSpace->getX() - thisKing->getX()) == 0)
+		if (abs(thatSpace->getY() - thisKing->getY()) == 1 || abs(thatSpace->getY() - thisKing->getY()) == 0)
 		{
 			thatSpace->setSpace(thisKing);
 			thisKing->setEmpty();
@@ -340,6 +470,8 @@ bool  Piece::makeMove(int x1, int y1, int x2, int y2) {
 
 	Square* from = getSquare(x1, y1);
 	Square* to = getSquare(x2, y2);
+
+
 	if (x1 < 0 || x1>7 || y1 < 0 || y1>7 || x2 < 0 || x2>7 || y2 < 0 || y2>7)
 	{
 		return false;
@@ -365,6 +497,8 @@ bool  Piece::makeMove(int x1, int y1, int x2, int y2) {
 	case ROOK: return moveRook(from, to);
 		break;
 	case BISHOP: return moveBishop(from, to);
+		break;
+	case QUEEN: return moveQueen(from, to);
 		break;
 	case KING: return moveKing(from, to);
 		break;
@@ -408,6 +542,9 @@ bool Piece::softMakeMove(int x1, int y1, int x2, int y2)
 		break;
 	case KING: return softMoveKing(from, to);
 		break;
+	case QUEEN: return softMoveQueen(from, to);
+		break;
+	
 	
 	}
 	
@@ -423,13 +560,13 @@ bool Piece::isMoved() {
 	int kingBlackX = 0;
 	int kingBlackY = 4;
 	bool stop = false;
-	
+	char a;
 	
 	while (!stop)
 	{
 		(turn == WHITE) ? cout << "White's turn" << endl : cout << "Black's turn" << endl;
 		cout << "Type in your move with 4 numbers. Type in first the Row(R) in each pair." << endl << "Example: 7655 means you want to move your piece from 76 position to 55 position " << endl;
-		cout << checked << "    "  << "  " << l << "   " << p <<endl;
+		cout << checked << "    "  << "  " << l << "   " << p << "             " << m << endl;
 		cin >> move;
 		x1 = move[0] - 48;
 		y1 = move[1] - 48;
@@ -445,7 +582,7 @@ bool Piece::isMoved() {
 		}
 
 		else if (getSquare(x1, y1)->getColor() == turn)
-		{ 
+		{
 			if (checked == false)
 			{
 				if (makeMove(x1, y1, x2, y2) == false)
@@ -453,20 +590,31 @@ bool Piece::isMoved() {
 					cout << "Invalid move, try again." << endl;
 
 				}
-				else 
-					stop = true;
-				
+				else
+					if (getSquare(x2, y2)->getPiece() == PAWN && x2 == 0 || getSquare(x2, y2)->getPiece() == PAWN && x2 == 7) {
+
+
+						cout << "You want to promote your pawn to? Enter a character: Q stands for Queen, H for Knight ..";
+						cin >> a;
+						pawnPromote(x2, y2, a);
+						stop = true;
+					}
+
+					else
+						stop = true;
+
 			}
 			else {
 				if (makeMove(x1, y1, x2, y2) == true)
 				{
+				
 
-					if (isChecked(l, p, kingWhiteX, kingWhiteY) == true)
+					if (isChecked(l, p, kingWhiteX, kingWhiteY) == true && getSquare(x2,y2)->getPiece() != KING)
 					{
 						cout << "Your King is Checked" << endl;
 						if (getSquare(x2, y2)->getPiece() == PAWN)
 						{
-							reculePawn(getSquare(x2,y2),getSquare(x1,y1));
+							reculePawn(getSquare(x2, y2), getSquare(x1, y1));
 						}
 						else
 							makeMove(x2, y2, x1, y1);
@@ -480,6 +628,7 @@ bool Piece::isMoved() {
 
 				}
 			}
+		
 			
 		}
 		else if (getSquare(x1, y1)->getPiece() == EMPTY)
@@ -491,13 +640,15 @@ bool Piece::isMoved() {
 		else 
 			cout << "That's not your piece. Try again." << endl;
 	}
+
+	
 	
 
 	
-	if (isChecked(x2, y2, kingWhiteX, kingWhiteY) && getSquare(x1,y1)->getPiece() != KING) {
+	if (isChecked(x2, y2, kingWhiteX, kingWhiteY) && getSquare(x2,y2)->getColor() != WHITE && getSquare(x2,y2)->getPiece() != KING) {
 		cout << "CHEEEEEEEEECK";
 		checked = true;
-		m = x1;
+	//	m = x1;
 		n = y1;
 		l = x2;
 		p = y2;
@@ -548,6 +699,61 @@ bool Piece::validMove(int a, int b, int c, int d)
 			return false;
 		}
 		else return true;
+}
+
+void Piece::pawnPromote(int a , int b , char x)
+{
+	if (getSquare(a, b)->getColor() == WHITE) {
+
+
+		switch (x)
+		{
+		case 'q': square[a][b].setPieceAndColor(QUEEN, WHITE);
+			break;
+
+		case 'Q': square[a][b].setPieceAndColor(QUEEN, WHITE);
+			break;
+		case 'h': square[a][b].setPieceAndColor(KNIGHT, WHITE);
+			break;
+		case 'b': square[a][b].setPieceAndColor(BISHOP, WHITE);
+			break;
+		case 'B': square[a][b].setPieceAndColor(BISHOP, WHITE);
+			break;
+		case 'r': square[a][b].setPieceAndColor(ROOK, WHITE);
+			break;
+		case 'R': square[a][b].setPieceAndColor(ROOK, WHITE);
+			break;
+		default:
+			break;
+		}
+	}
+	else if (getSquare(a, b)->getColor() == BLACK) {
+
+		switch (x)
+		{
+		case 'q': square[a][b].setPieceAndColor(QUEEN, BLACK);
+			break;
+
+		case 'Q': square[a][b].setPieceAndColor(QUEEN, BLACK);
+			break;
+		case 'h': square[a][b].setPieceAndColor(KNIGHT, BLACK);
+			break;
+		case 'b': square[a][b].setPieceAndColor(BISHOP, BLACK);
+			break;
+		case 'B': square[a][b].setPieceAndColor(BISHOP, BLACK);
+			break;
+		case 'r': square[a][b].setPieceAndColor(ROOK, BLACK);
+			break;
+		case 'R': square[a][b].setPieceAndColor(ROOK, BLACK);
+			break;
+		default:
+			break;
+		}
+
+
+
+
+	}
 }
 
 
