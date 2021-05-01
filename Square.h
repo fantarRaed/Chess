@@ -19,7 +19,7 @@ public:
 	void setSpace(Square*);
 	void setEmpty();
 	void setPieceAndColor(Name, Color);
-	
+
 	
 	
 

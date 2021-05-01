@@ -17,9 +17,9 @@ int main()
 	while (newgame) {
 		p.setBoard();
 		while (p.playGame());
-		cout << "Do you want to play again? (y for yes, anything else for no) ";
+		cout << "Do you want to play again? (y stands for yes, anything else for no) ";
 		cin >> s;
-		if (s != "y")
+		if (s != "y" || s!= "Y")
 			newgame = false;
 		
 	}
