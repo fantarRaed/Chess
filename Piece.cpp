@@ -288,7 +288,6 @@ bool Piece::moveQueen(Square* thisQueen, Square* thatSpace) {
 
 					for (int i = 1; i < abs(queenX - thatX); i++)
 					{
-						std::cout << "It got here somehow";
 						if (square[queenX + xx * i][queenY + yy * i].getColor() != NONE)
 							return false;
 
@@ -353,7 +352,7 @@ bool Piece::softMoveQueen(Square thisQueen, Square thatSpace)
 
 			for (int i = 1; i < abs(queenX - thatX); i++)
 			{
-				std::cout << "It got here somehow";
+				
 				if (square[queenX + xx * i][queenY + yy * i].getColor() != NONE)
 					return false;
 
