@@ -14,6 +14,8 @@ Color Square::getColor()
 	return color;
 }
 
+
+
 void Square::setSpace(Square* space)
 {
 	color = space->getColor();
@@ -32,6 +34,13 @@ void Square::setPieceAndColor(Name p, Color c)
 	piece = p;
 	color = c;
 
+}
+
+bool Square::operator==(const Square& s)
+{
+	if (piece == s.piece && color == s.color && x == s.x && y == s.y) return true;
+	else return false;
+	
 }
 
 
