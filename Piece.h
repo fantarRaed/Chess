@@ -9,6 +9,7 @@ class Piece : public Board
 	int m = 0, l = 0, n = 0, r = 0, k = 0, f = 0, j = 0, s = 0, w = 0;
 	int kingWhiteX = 0, kingWhiteY = 0, kingBlackX = 0, kingBlackY = 0;
 	bool checked = false;
+	bool whiteShortCastle = true, whiteLongCastle = true, blackShortCastle = true, blackLongCastle = true;
 
 public:
 	
@@ -29,6 +30,7 @@ public:
 
 	bool moveKing(Square* thisKing, Square* thatSpace);
 	bool softMoveKing(Square* thisKing, Square* thatSpace);
+	bool kingCastle(Square* thisKing, Square* thatSpace);
 	bool makeMove(int x1, int y1, int x2, int y2);
 	bool softMakeMove(int x1, int y1, int x2, int y2);
 

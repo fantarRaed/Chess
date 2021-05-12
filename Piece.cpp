@@ -423,6 +423,15 @@ bool Piece::softMoveQueen(Square* thisQueen, Square* thatSpace)
 }
 bool Piece::moveKing(Square* thisKing, Square* thatSpace)
 {
+	if (thatSpace->getX() == 7 && thatSpace->getY() == 6 || thatSpace->getX() == 7 && thatSpace->getY() == 2
+		|| thatSpace->getX() == 0 && thatSpace->getY() == 6 || thatSpace->getX() == 0 && thatSpace->getY() == 2) {
+
+
+		return kingCastle(thisKing,thatSpace);
+
+		
+	}
+
 	if (abs(thatSpace->getX() - thisKing->getX()) == 1 || abs(thatSpace->getX() - thisKing->getX()) == 0)
 		if (abs(thatSpace->getY() - thisKing->getY()) == 1 || abs(thatSpace->getY() - thisKing->getY()) == 0)
 		{
@@ -430,9 +439,10 @@ bool Piece::moveKing(Square* thisKing, Square* thatSpace)
 			thisKing->setEmpty();
 			return true;
 		}
-	
+
 		else return false;
 	else return false;
+	
 }
 
 bool Piece::softMoveKing(Square* thisKing, Square* thatSpace)
@@ -446,6 +456,81 @@ bool Piece::softMoveKing(Square* thisKing, Square* thatSpace)
 
 		else return false;
 	else return false;
+}
+
+bool Piece::kingCastle(Square* thisKing,Square* thatSpace)
+{
+	
+	if (thisKing->getColor() == WHITE ) {
+
+		if (thatSpace->getX() == 7 && thatSpace->getY() == 6 ) {
+			if (whiteShortCastle) {
+				if (square[7][5].getPiece() == EMPTY && square[7][6].getPiece() == EMPTY && !whiteIsChecked(7, 6) && !whiteIsChecked(7, 5)) {
+					square[7][7].setEmpty();
+					square[7][4].setEmpty();
+					square[7][5].setPieceAndColor(ROOK, WHITE);
+					square[7][6].setPieceAndColor(KING, WHITE);
+					whiteShortCastle = false;
+					return true;
+				}
+				else return false;
+			}
+			else return false;
+		}
+		else if (thatSpace->getX() == 7 && thatSpace->getY() == 2 ) {
+			if (whiteLongCastle) {
+				if (square[7][3].getPiece() == EMPTY && square[7][2].getPiece() == EMPTY && square[7][1].getPiece() == EMPTY
+					&& !whiteIsChecked(7, 3) && !whiteIsChecked(7, 2) && !whiteIsChecked(7, 1)) {
+					square[7][0].setEmpty();
+					square[7][4].setEmpty();
+					square[7][3].setPieceAndColor(ROOK, WHITE);
+					square[7][2].setPieceAndColor(KING, WHITE);
+					whiteLongCastle = false;
+					return true;
+				}
+				else return false;
+			}
+			else return false;
+		}
+		
+		} 
+		else if (thisKing->getColor() == BLACK) {
+		if (thatSpace->getX() == 0 && thatSpace->getY() == 6 ) {
+			if (blackShortCastle) {
+				if (square[0][5].getPiece() == EMPTY && square[0][6].getPiece() == EMPTY && !blackIsChecked(0, 6) && !blackIsChecked(0, 5)) {
+
+					square[0][7].setEmpty();
+					square[0][4].setEmpty();
+					square[0][5].setPieceAndColor(ROOK, BLACK);
+					square[0][6].setPieceAndColor(KING, BLACK);
+					blackShortCastle = false;
+					return true;
+				}
+				else return false;
+			}
+			else return false;
+
+		}
+		else if (thatSpace->getX() == 0 && thatSpace->getY() == 2 ) {
+			if (blackLongCastle) {
+				if (square[0][3].getPiece() == EMPTY && square[0][2].getPiece() == EMPTY && square[0][1].getPiece() == EMPTY
+					&& !blackIsChecked(0, 3) && !blackIsChecked(0, 2) && !blackIsChecked(0, 1)) {
+					square[0][0].setEmpty();
+					square[0][4].setEmpty();
+					square[0][3].setPieceAndColor(ROOK, BLACK);
+					square[0][2].setPieceAndColor(KING, BLACK);
+					blackLongCastle = false;
+					return true;
+				}
+				else return false;
+			}
+			else return false;
+		}
+
+		}
+
+
+	
 }
 
 
@@ -647,7 +732,7 @@ bool Piece::isMoved() {
 
 		(turn == WHITE) ? cout << "White's turn" << endl : cout << "Black's turn" << endl;
 		cout << "Type in your move with 4 numbers. Type in first the Row(R) in each pair." << endl << "Example: 7655 means you want to move your piece from 76 position to 55 position " << endl;
-		cout << checked << "    " << "  " << "   " << "l=" << l << "             " << "s= " << s << "w= " << w << "kingWhiteX=  " << kingWhiteX << " kingWhiteY= " << kingWhiteY
+		cout << checked << "    " << whiteShortCastle << "  " << "   " << "l=" << l << "             " << "s= " << s << "w= " << w << "kingWhiteX=  " << kingWhiteX << " kingWhiteY= " << kingWhiteY
 			<< "        " << "f= " << f << "    " << "m=" << m << "kingBlackX= " << kingBlackX << " KingBlackY= " << kingBlackY << endl;
 		cin >> move;
 		x1 = move[0] - 48;
@@ -689,6 +774,8 @@ bool Piece::isMoved() {
 						
 						stop = true;
 					}
+					
+					
 
 				}			
 
@@ -703,7 +790,7 @@ bool Piece::isMoved() {
 						kingWhiteX = x2;
 						kingWhiteY = y2;
 				    }
-					if ((whiteIsChecked(kingWhiteX, kingWhiteY) && turn != BLACK) || blackIsChecked(kingBlackX, kingBlackY) && turn != WHITE)
+					if ((whiteIsChecked(kingWhiteX, kingWhiteY) ) || blackIsChecked(kingBlackX, kingBlackY))
 					{
 						cout << "Your Piece is Checked" << endl;
 						if (getSquare(x2, y2)->getPiece() == PAWN)
@@ -750,10 +837,20 @@ bool Piece::isMoved() {
 			cout << "That's not your piece. Try again." << endl;
 	}
 
-	
-	
+	if (getSquare(7, 7)->getPiece() != ROOK) {
+		whiteShortCastle = false;
+	}
+	if (getSquare(7, 0)->getPiece() != ROOK) {
+		whiteLongCastle = false;
+	}
+	if (getSquare(0, 7)->getPiece() != ROOK) {
+		blackShortCastle = false;
+	}
+	if (getSquare(0, 0)->getPiece() != ROOK) {
+		blackLongCastle = false;
+	}
 
-	
+
 	if (whiteIsChecked(kingWhiteX,kingWhiteY) || blackIsChecked(kingBlackX, kingBlackY))/*&& getSquare(x2,y2)->getColor() != WHITE && getSquare(x2,y2)->getPiece() != KING)*/ {
 		cout << "CHEEEEEEEEECK";
 		checked = true;
@@ -761,6 +858,7 @@ bool Piece::isMoved() {
 	}
 	else
 		checked = false;
+	
 
 	
 		
