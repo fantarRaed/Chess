@@ -147,14 +147,14 @@ void Piece::reculePawn(Square* thisPawn, Square* thatSpace)
 	{
 
 		if (pawnY == thatY && thatX == pawnX + 1 && thatSpace->getColor() == NONE
-			|| pawnX == 6 && pawnY == thatY && thatX == pawnX + 2 && thatSpace->getColor() == NONE)
+			|| pawnX == 4 && pawnY == thatY && thatX == pawnX + 2 && thatSpace->getColor() == NONE)
 		{
 			thatSpace->setSpace(thisPawn);
 			thisPawn->setEmpty();
 			
 		}
 		else
-			if ((pawnY + 1 == thatY || pawnY - 1 == thatY) && pawnX + 1 == thatX && thatSpace->getColor() == WHITE)
+			if ((pawnY + 1 == thatY || pawnY - 1 == thatY) && pawnX + 1 == thatX && thatSpace->getColor() == NONE)
 			{
 				thatSpace->setSpace(thisPawn);
 				thisPawn->setEmpty();
@@ -643,6 +643,51 @@ bool  Piece::makeMove(int x1, int y1, int x2, int y2) {
 	return false;
 }
 
+bool Piece::makeMoveWithoutOutputs(int x1, int y1, int x2, int y2)
+{
+	using namespace std;
+
+	Square* from = getSquare(x1, y1);
+	Square* to = getSquare(x2, y2);
+
+
+	if (x1 < 0 || x1>7 || y1 < 0 || y1>7 || x2 < 0 || x2>7 || y2 < 0 || y2>7)
+	{
+		return false;
+
+	}
+	if (from->getColor() == to->getColor() && to->getColor() != NONE)
+	{
+		return false;
+
+	}
+
+
+
+
+	switch (from->getPiece())
+	{
+
+	case PAWN: return movePawn(from, to);
+		break;
+	case KNIGHT: return moveKnight(from, to);
+		break;
+	case ROOK: return moveRook(from, to);
+		break;
+	case BISHOP: return moveBishop(from, to);
+		break;
+	case QUEEN: return moveQueen(from, to);
+		break;
+	case KING: return moveKing(from, to);
+		break;
+	case EMPTY:  return false;
+		break;
+	default: cout << "Theres somehow an error in switch statment in makeMove()" << endl;
+		break;
+	}
+	return false;
+}
+
 bool Piece::softMakeMove(int x1, int y1, int x2, int y2)
 {
 	using namespace std;
@@ -694,6 +739,7 @@ bool Piece::isMoved() {
 	int x1, x2, y1, y2;
 	bool stop = false;
 	char a;
+	Piece p;
 	
 	
 	
@@ -852,12 +898,19 @@ bool Piece::isMoved() {
 
 
 	if (whiteIsChecked(kingWhiteX,kingWhiteY) || blackIsChecked(kingBlackX, kingBlackY))/*&& getSquare(x2,y2)->getColor() != WHITE && getSquare(x2,y2)->getPiece() != KING)*/ {
-		cout << "CHEEEEEEEEECK";
+		//cout << "CHEEEEEEEEECK";
 		checked = true;
 
 	}
 	else
 		checked = false;
+	if (whiteIsCheckMated()) {
+
+		return false;
+	}
+		
+
+	
 	
 
 	
@@ -976,6 +1029,63 @@ bool Piece::blackIsChecked(int x1, int y1)
 			}
 		}
 	}
+}
+
+bool Piece::whiteIsCheckMated()
+{
+	bool valid = false;
+	Square* s;
+	if (whiteIsChecked(kingWhiteX,kingWhiteY)) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (square[i][j].getPiece() != EMPTY && square[i][j].getColor() == WHITE) {
+					for (int k = 0; k < 8; k++) {
+						for (int q = 0; q < 8; q++) {
+
+							if (makeMoveWithoutOutputs(i,j,k,q) ){
+								s = (getSquare(i, j));
+
+								if (whiteIsChecked(kingWhiteX, kingWhiteY)) {
+
+									if (getSquare(k, q)->getPiece() == PAWN)
+									{
+										reculePawn(getSquare(k, q), getSquare(i,j));
+									}
+									else
+										makeMove(k, q, i,j);
+									getSquare(i,j)->setPieceAndColor(s->getPiece(), s->getColor());
+
+								}
+								else {
+									valid = true;
+									if (getSquare(k, q)->getPiece() == PAWN)
+									{
+										reculePawn(getSquare(k, q), getSquare(i,j));
+									}
+									else
+										makeMove(k, q, i, j);
+									getSquare(i,j)->setPieceAndColor(s->getPiece(), s->getColor());
+
+
+
+								}
+								
+
+							}
+						}
+					}
+				}
+
+
+			}
+		}
+
+		if (valid == false) return true;
+		else return false;
+
+
+	}
+	else return false;
 }
 
 

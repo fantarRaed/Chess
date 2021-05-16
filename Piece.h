@@ -32,12 +32,14 @@ public:
 	bool softMoveKing(Square* thisKing, Square* thatSpace);
 	bool kingCastle(Square* thisKing, Square* thatSpace);
 	bool makeMove(int x1, int y1, int x2, int y2);
+	bool makeMoveWithoutOutputs(int x1, int y1, int x2, int y2);
 	bool softMakeMove(int x1, int y1, int x2, int y2);
 
 	bool isMoved();
 	bool playGame();
 	bool whiteIsChecked(int x1, int y1);
 	bool blackIsChecked(int, int);
+	bool whiteIsCheckMated();
 	bool validMove(int x1, int y1, int x2, int y2);
 	bool validValidMove();
 	void pawnPromote(int a , int b  , char x);
