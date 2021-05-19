@@ -18,28 +18,38 @@ public:
 	bool movePawn(Square* thisPawn, Square* thatSpace);
 	bool fakeMovePawn(Square* thisPawn, Square* thatSpace);
 	void reculePawn(Square* thisPawn, Square* thatSpace);
+	void pawnPromote(int a, int b, char x);
+
 	bool moveKnight(Square* thisKnight, Square* thatSpace);
 	bool fakeMoveKnight(Square* thisKnight, Square* thatSpace);
+
+	bool moveBishop(Square* thisBishop, Square* thatSpace);
+	bool fakeMoveBishop(Square* thisBishop, Square* thatSpace);
+	bool moveBishopWithoutOutputs(Square* thisBishop, Square* thatSpace);
+
 	bool moveRook(Square* thisKnight, Square* thatSpace);
 	bool fakeMoveRook(Square* thisRook, Square* thatSpace);
-	bool moveBishop(Square* thisBishop, Square* thatSpace);
-	bool fakeMoveBishop(Square*thisBishop, Square* thatSpace);
-	bool moveBishopWithoutOutputs(Square* thisBishop, Square* thatSpace);
+	
 	bool moveQueen(Square* thisQueen, Square* thatSpace);
 	bool fakeMoveQueen(Square* thisQueen, Square* thatSpace);
+
 	bool moveKing(Square* thisKing, Square* thatSpace);
 	bool fakeMoveKing(Square* thisKing, Square* thatSpace);
 	bool kingCastle(Square* thisKing, Square* thatSpace);
+
 	bool makeMove(int x1, int y1, int x2, int y2);
-	bool makeMoveWithoutOutputs(int x1, int y1, int x2, int y2);
 	bool fakeMakeMove(int x1, int y1, int x2, int y2);
-	bool isMoved();
-	bool playGame();
+	bool makeMoveWithoutOutputs(int x1, int y1, int x2, int y2);
+
 	bool whiteIsChecked(int x1, int y1);
 	bool blackIsChecked(int, int);
 	bool whiteIsCheckMated();
 	bool blackIsCheckMated();
-	void pawnPromote(int a, int b, char x);
+	
+	bool isMoved();
+	bool playGame();
+	
+	
 
 	
 
