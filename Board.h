@@ -6,14 +6,13 @@
 
 
 class Board
-{
-protected:
+{ protected:
 	Color turn = WHITE;
 	Square square[8][8];
 
 public:
-
-	Board();
+	
+	
 	Square* getSquare(int x, int y) {
 		return &square[x][y];
 	}
@@ -25,7 +24,6 @@ public:
 	}
 	void setBoard();
 	void printBoard();
-	Board(const Board& b);
 
 
 

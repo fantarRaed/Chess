@@ -2,7 +2,7 @@
 Square::Square()
 {
 	piece = EMPTY;
-	color = NONE;
+	color=NONE;
 }
 Name Square::getPiece()
 {
@@ -40,18 +40,7 @@ bool Square::operator==(const Square& s)
 {
 	if (piece == s.piece && color == s.color && x == s.x && y == s.y) return true;
 	else return false;
-
+	
 }
-
-Square::Square(const Square& s)
-{
-	piece = s.piece;
-	color = s.color;
-	x = s.x;
-	y = s.y;
-
-}
-
-
 
 
