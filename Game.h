@@ -13,6 +13,25 @@ class Game : public Board
 
 public:
 	
+	Game& operator=(Game& g) {
+		m = g.m;
+		f = g.f;
+		kingWhiteX = g.kingWhiteX;
+		kingWhiteY = g.kingWhiteY;
+		kingBlackX = g.kingBlackX;
+		kingBlackY = g.kingBlackY;
+		checked = g.checked;
+		whiteShortCastle = g.whiteShortCastle;
+		whiteLongCastle = g.whiteLongCastle;
+		blackShortCastle = g.blackShortCastle;
+		blackLongCastle = g.blackLongCastle;
+		turn = g.turn;
+		
+
+		return (*this);
+	}
+
+	Game();
 	
 
 	bool movePawn(Square* thisPawn, Square* thatSpace);
@@ -45,6 +64,7 @@ public:
 	bool blackIsChecked(int, int);
 	bool whiteIsCheckMated();
 	bool blackIsCheckMated();
+	bool staleMated();
 	
 	bool isMoved();
 	bool playGame();

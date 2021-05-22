@@ -4,12 +4,14 @@
 #include <assert.h>
 
 
+Game::Game()
+{
 
-
-
-
-
-
+	int m = 0, f = 0;
+	int kingWhiteX = 0, kingWhiteY = 0, kingBlackX = 0, kingBlackY = 0;
+	bool checked = false;
+	bool whiteShortCastle = true, whiteLongCastle = true, blackShortCastle = true, blackLongCastle = true;
+}
 
 bool Game::movePawn(Square* thisPawn, Square* thatSpace) {
 
@@ -170,10 +172,10 @@ void Game::reculePawn(Square* thisPawn, Square* thatSpace)
 
 
 	}
-	else
+	else 
 
 		if (pawnY == thatY && thatX == pawnX - 1 && thatSpace->getColor() == NONE
-			|| pawnX == 6 && pawnY == thatY && thatX == pawnX - 2 && thatSpace->getColor() == NONE)
+			|| pawnX == 3 && pawnY == thatY && thatX == pawnX - 2 && thatSpace->getColor() == NONE)
 		{
 			thatSpace->setSpace(thisPawn);
 			thisPawn->setEmpty();
@@ -185,6 +187,7 @@ void Game::reculePawn(Square* thisPawn, Square* thatSpace)
 				thatSpace->setSpace(thisPawn);
 				thisPawn->setEmpty();
 			}
+	
 
 
 
@@ -944,6 +947,7 @@ bool Game::isMoved() {
 
 			}
 			else {
+
 				if (makeMove(x1, y1, x2, y2) == true)
 				{
 					if (getSquare(x2, y2)->getPiece() == KING && getSquare(x2, y2)->getColor() == WHITE) {
@@ -1020,11 +1024,10 @@ bool Game::isMoved() {
 
 	}
 
-
-
-
-
-
+	/*if (staleMated()) {
+		cout << "DRAW!, There's a staleMate!" << endl;
+		return false;
+	}*/
 
 	if (turn == BLACK) {
 		turn = WHITE;
@@ -1144,8 +1147,8 @@ bool Game::blackIsChecked(int x1, int y1)
 
 bool Game::whiteIsCheckMated()
 {
-	Game p;
-	p = *this;
+	/*Game p;
+	p = *this;*/
 	int a = kingWhiteX;
 	int b = kingWhiteY;
 	bool valid = false;
@@ -1211,7 +1214,7 @@ bool Game::whiteIsCheckMated()
 
 			}
 		}
-		p.printBoard();
+		printBoard();
 
 		if (valid == false) return true;
 		else return false;
@@ -1223,8 +1226,8 @@ bool Game::whiteIsCheckMated()
 
 bool Game::blackIsCheckMated()
 {
-	Game p;
-	p = *this;
+	/*Game p;
+	p = *this;*/
 	int a = kingBlackX;
 	int b = kingBlackY;
 	bool valid = false;
@@ -1290,7 +1293,7 @@ bool Game::blackIsCheckMated()
 
 			}
 		}
-		p.printBoard();
+		printBoard();
 
 		if (valid == false) return true;
 		else return false;
@@ -1299,6 +1302,158 @@ bool Game::blackIsCheckMated()
 	}
 	else return false;
 
+}
+
+bool Game::staleMated()
+{
+	int a = kingWhiteX;
+	int b = kingWhiteY;
+	bool valid = false;
+
+	if (!(whiteIsChecked(kingWhiteX, kingWhiteY)) && turn == BLACK) {
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (square[i][j].getPiece() != EMPTY && square[i][j].getColor() == WHITE) {
+
+					for (int k = 0; k < 8; k++) {
+						for (int q = 0; q < 8; q++) {
+
+							Square s = *(getSquare(k, q));
+
+
+
+
+							if (makeMoveWithoutOutputs(i, j, k, q)) {
+
+
+								if (getSquare(k, q)->getPiece() == KING && getSquare(k, q)->getColor() == WHITE) {
+									kingWhiteX = k;
+									kingWhiteY = q;
+								}
+
+
+								if ((whiteIsChecked(kingWhiteX, kingWhiteY)) == false) {
+
+									valid = true;
+
+								}
+
+								if (getSquare(k, q)->getPiece() == PAWN)
+								{
+									reculePawn(getSquare(k, q), getSquare(i, j));
+									getSquare(k, q)->setPieceAndColor(s.getPiece(), s.getColor());
+
+								}
+								else {
+									makeMove(k, q, i, j);
+									getSquare(k, q)->setPieceAndColor(s.getPiece(), s.getColor());
+
+								}
+								kingWhiteX = a;
+								kingWhiteY = b;
+
+
+
+
+
+
+
+
+
+							}
+
+
+
+						}
+					}
+				}
+
+
+			}
+		}
+		printBoard();
+
+		if (valid == false) return true;
+		else return false;
+
+
+	}
+	 int c = kingBlackX;
+	 int d = kingBlackY;
+
+	 if (!(blackIsChecked(kingBlackX, kingBlackY)) && turn == BLACK) {
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (square[i][j].getPiece() != EMPTY && square[i][j].getColor() == BLACK) {
+
+					for (int k = 0; k < 8; k++) {
+						for (int q = 0; q < 8; q++) {
+
+							Square s = *(getSquare(k, q));
+
+
+
+
+							if (makeMoveWithoutOutputs(i, j, k, q)) {
+
+
+								if (getSquare(k, q)->getPiece() == KING && getSquare(k, q)->getColor() == BLACK) {
+									kingBlackX = k;
+									kingBlackY = q;
+								}
+
+
+								if ((blackIsChecked(kingBlackX, kingBlackY)) == false) {
+
+									valid = true;
+
+								}
+
+								if (getSquare(k, q)->getPiece() == PAWN)
+								{
+									reculePawn(getSquare(k, q), getSquare(i, j));
+									getSquare(k, q)->setPieceAndColor(s.getPiece(), s.getColor());
+
+								}
+								else {
+									makeMove(k, q, i, j);
+									getSquare(k, q)->setPieceAndColor(s.getPiece(), s.getColor());
+
+								}
+								kingBlackX = c;
+								kingBlackY = d;
+
+
+
+
+
+
+
+
+
+							}
+
+
+
+						}
+					}
+				}
+
+
+			}
+		}
+		printBoard();
+
+		if (valid == false) return true;
+		else return false;
+
+
+	}
+	
+	
+	
 }
 
 

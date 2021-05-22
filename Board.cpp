@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "Square.h"
+
 void Board::setBoard()
 {
 	square[7][7].setPieceAndColor(ROOK, WHITE);
@@ -21,14 +22,14 @@ void Board::setBoard()
 
 	for (int i = 0; i < 8; i++)
 	{
-		square[6][i].setPieceAndColor(PAWN,WHITE);
-		square[1][i].setPieceAndColor(PAWN,BLACK);
+		square[6][i].setPieceAndColor(PAWN, WHITE);
+		square[1][i].setPieceAndColor(PAWN, BLACK);
 
 	}
 	for (int i = 2; i < 6; i++)
 	{
 		for (int j = 0; j < 8; j++)
-			square[i][j].setPieceAndColor(Name::EMPTY,Color::NONE);
+			square[i][j].setPieceAndColor(Name::EMPTY, Color::NONE);
 
 	}
 	for (int i = 0; i < 8; i++)
@@ -42,7 +43,7 @@ void Board::setBoard()
 void Board::printBoard() {
 	using namespace std;
 	cout << "   C: 0  1  2  3  4  5  6  7 " << endl << "R:" << endl;
-	for (int i = 0; i < 8 ; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		cout << " " << i << "   ";
 		for (int j = 0; j < 8; j++)
@@ -75,6 +76,32 @@ void Board::printBoard() {
 	}
 
 }
+
+
+
+void Board::testStaleMate()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+			square[i][j].setPieceAndColor(Name::EMPTY, Color::NONE);
+
+	}
+	square[7][4].setPieceAndColor(KING, WHITE);
+	square[1][5].setPieceAndColor(QUEEN, WHITE);
+	square[0][0].setPieceAndColor(KING, BLACK);
+	
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+		{
+			square[i][j].setX(i);
+			square[i][j].setY(j);
+		}
+
+
+}
+
+
 
 
 

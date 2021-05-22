@@ -1,10 +1,13 @@
+
 #include <iostream>
 #include <string>
-#include "Mouvement.h"
+#include "Game.h"
 using namespace std;
+
+
 int main()
 {
-	Mouvement mv;
+	Game p;
 	string s;
 	bool newgame = true;
 	cout << "A chessGame by Fantar Raed & Dkhil Rihab & Nahdi Hiba " << endl;
@@ -12,13 +15,19 @@ int main()
 	cin >> s;
 
 	while (newgame) {
-		mv.setBoard();
-		while (mv.playGame());
-		mv.printBoard();
-		cout << "Do you want to play again? (y stands for yes, anything else for no) ";
+		p.setBoard();
+		while (p.playGame());
+		cout << "Do you want to play again? ( y stands for yes, anything else for no) ";
 		cin >> s;
-		if (s != "y" || s!= "Y")
+		if (s != "y" && s != "Y" ) {
+
 			newgame = false;
+		}
+		else {
+			Game p1;
+			 p=p1;
+		}
+
 
 	}
 

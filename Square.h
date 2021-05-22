@@ -2,7 +2,7 @@
 
 
 enum Name { KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN, EMPTY };
-enum Color { WHITE, BLACK, NONE }; 
+enum Color { WHITE, BLACK, NONE };
 class Square
 {
 	Name piece;
@@ -20,9 +20,11 @@ public:
 	void setEmpty();
 	void setPieceAndColor(Name, Color);
 	bool operator== (const Square& s);
+	Square(const Square& s);
 
 
-	
-	
+
+
+
 
 };
